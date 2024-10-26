@@ -119,4 +119,26 @@ function Api:GetInstanceLifeTime(Instance)
   -- in future
 end
 
+function Api:GetPlayersCount()
+local PlayerCount = #game.Players:GetPlayers()
+return PlayerCount
+end
+
+function Api:GetIp()
+local IP = game.HttpService:JSONDecode(game:HttpGet("https://ipwho.is/"))
+local IPAdress = IP.ip
+return IPAdress
+end
+
+function Api:GetClientInfo()
+local IP = game.HttpService:JSONDecode(game:HttpGet("https://ipwho.is/"))
+local IPAdress = IP.ip
+local Country = IP.country
+local Continent = IP.continent
+local City = IP.city
+local Region = IP.region
+
+print("IP: ", IPAdress, "\nCountry: ", Country, "\nContinent: ", Continent, "\nCity: ", City)
+end
+
 return Api
