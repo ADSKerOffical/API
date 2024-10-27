@@ -190,4 +190,45 @@ function Api:WhiteColor()
  return Color3.new(1, 1, 1)
 end
 
+function Api:GetFloorPartOnPart(part)
+local Ray = Ray.new(part.Position, Vector3.new(0, -part.Size.Y - 4.5, 0))
+local FloorPart = workspace:FindPartOnRay(Ray, IgnoreDescendantsObject)
+return FloorPart
+end
+
+function Api:ColorToHex(color)
+    local r = math.floor(color.R * 255)
+    local g = math.floor(color.G * 255)
+    local b = math.floor(color.B * 255)
+
+    local hex = string.format("#%02X%02X%02X", r, g, b)
+    
+    return hex
+end
+
+function Api:ColorToRGB(color)
+    local r = math.floor(color.R * 255)
+    local g = math.floor(color.G * 255)
+    local b = math.floor(color.B * 255)
+    return Color3.fromRGB(r, g, b)
+end
+
+function Api:GetFont(label)
+ if label["FontFace"] then
+return label.FontFace
+ end
+end
+
+function Api:GetRealTime()
+ return os.date("%H:%M:%S")
+end
+
+function Api:GetNumSymbols(string)
+ return #string
+end
+
+function Api:GetDistanceBetweenParts(part1, part2)
+    return (part1.Position - part2.Position).magnitude
+end
+
 return Api
