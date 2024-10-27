@@ -19,15 +19,15 @@ end
 function Api:RemoveTexture(Instance)
 pcall(function()
 for _, script in ipairs(Instance:GetDescendants()) do
-        if script:IsA("Texture") then
+        if script:IsA("Texture") or script:IsA("Decal") then
       script:Destroy()
         elseif script:IsA("SpecialMesh") then
       script.TextureId = ""
         elseif script:IsA("MeshPart") then
       script.TextureID = ""
-        end
+       end
     end
-end)
+ end)
 end 
 
 function Api:GetProperty(Instance, property)
@@ -97,21 +97,14 @@ return part.Mass
  end
 end
 
-function Api:ExecuteLocal(player, script, mode)
+function Api:ExecuteLocal(player, script)
 CustomRemoteEv = Instance.new("RemoteEvent", game.ReplicatedStorage)
 CustomRemoteEv.Name = "LocalScript"
 
   CustomRemoteEv.OnClientEvent:Connect(function()
  loadstring(script)()
   end)
-
-  if tostring(mode) == "server" then
-    CustomRemoteEv:FireServer()
-  elseif tostring(mode) == "client" then
     CustomRemoteEv:FireClient(player)
-  elseif tostring(mode) == "all" then
-    CustomRemoteEv:FireAllClients()
-  end
   CustomRemoteEv:Destroy()
 end
 
@@ -139,6 +132,62 @@ local City = IP.city
 local Region = IP.region
 
 print("IP: ", IPAdress, "\nCountry: ", Country, "\nContinent: ", Continent, "\nCity: ", City)
+end
+
+function Api:DestroyFunction(functionn)
+  if type(functionn) == "function" then
+functionn:Disconnect()
+  else
+error("Variable is not a function")
+  end
+end
+
+function Api:Clone(instance, parent)
+poi = instance:Clone()
+poi.Parent = parent
+return poi
+end
+
+function Api:GetToolsCount(player)
+local der = 0
+for _, tool in ipairs(player:WaitForChild("Backpack"):GetChildren()) do
+        if tool:IsA("Tool") then
+     der += 1
+        end
+    end
+return der
+end
+
+function Api:RemoveToolHandleTouched(tool)
+ if tool:FindFirstChild("Handle") then
+local handletou = tool:FindFirstChild("Handle")
+    if handletou:FindFirstChild("Touched") then
+ handletou:FindFirstChild("Touched"):Destroy()
+    end
+ end
+end
+
+function Api:BlockInventory(player, time)
+local runTime = time
+local startTime = os.clock()
+    while os.clock() - startTime < runTime and game:GetService("RunService").Heartbeat:Wait() do
+        player.Character.Humanoid:UnequipTools()
+    end
+end
+
+function Api:GetSumArea(part)
+ if part["Size"] then
+local sum = part.Size.X + part.Size.Y  + part.Size.Z
+return sum
+ end
+end
+
+function Api:ZeroColor()
+ return Color3.new(0, 0, 0)
+end
+
+function Api:WhiteColor()
+ return Color3.new(1, 1, 1)
 end
 
 return Api
