@@ -501,4 +501,27 @@ function Api:GetComponent(path)
  return value
 end
 
+function Api:StringToASCII(input)
+    local asciiString = ""
+    for i = 1, #input do
+        asciiString = asciiString .. "\\" .. tostring(string.byte(input, i))
+    end
+    return asciiString
+end
+
+function Api:ASCIIToString(asciiString)
+    local output = ""
+    for code in asciiString:gmatch("\\(%d+)") do
+        output = output .. string.char(tonumber(code))
+    end
+    return output
+end
+
+function Api:DecryptBackslash(input)
+local output = input:gsub("\\(%d+)", function(code)
+        return string.char(tonumber(code))
+    end)
+    return output
+end
+
 return Api
