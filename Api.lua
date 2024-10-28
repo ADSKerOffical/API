@@ -451,11 +451,42 @@ function Api:FrameWait()
   game:GetService("RunService").RenderStepped:Wait()
 end
 
-function Api:VulnerableIsStorage(vulnerable)
-  if vulnerable ~= nil and vulnerable:IsA("Instance") then
- return #vulnerable > 3
+function Api:VariableIsStorage(variable)
+  if variable ~= nil and variable:IsA("Instance") then
+ return #variable > 3
   end
   return false
+end
+
+function Api:IdentifyTable(tbl, indent)
+    indent = indent or 0
+    local prefix = string.rep("  ", indent)
+
+    for key, value in pairs(tbl) do
+        if type(value) == "table" then
+            print(prefix .. tostring(key) .. " = {")
+            PrintTable(value, indent + 1)
+            print(prefix .. "}")
+        else
+            print(prefix .. tostring(key) .. " = " .. tostring(value))
+        end
+    end
+end
+
+function Api:IdentifyTableProperties(tbl)
+    if type(tbl) == "table" then
+        print("Table properties:")
+        for key, value in pairs(tbl) do
+            print("Key: " .. tostring(key) .. ", Value: " .. tostring(value))
+        end
+    else
+        print("Provided argument is not a table")
+    end
+end
+
+function Api:IdentifyFunctionArgs(func)
+    local info = debug.getinfo(func, "u")
+    print("Function takes " .. (info.nparams or 0) .. " parameters.")
 end
 
 return Api
