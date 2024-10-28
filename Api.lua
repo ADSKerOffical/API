@@ -524,4 +524,27 @@ local output = input:gsub("\\(%d+)", function(code)
     return output
 end
 
+function Api:TableRemoveKey(table, key)
+    if table[key] then
+        table[key] = nil
+    end
+end
+
+function Api:NumberGCD(a, b)
+    while b ~= 0 do
+        a, b = b, a % b
+    end
+    return a
+end
+
+function Api:NumberLCM(a, b)
+    return (a * b) / self:GCD(a, b)
+end
+
+function Api:SortChars(str)
+    local sorted = str:split("")
+    table.sort(sorted)
+    return table.concat(sorted)
+end
+
 return Api
