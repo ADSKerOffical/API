@@ -311,4 +311,151 @@ function Api:EvenNumber(n)
  return n % 2 == 0
 end
 
+function Api:HumanoidHeal(humanoid, number)
+ if humanoid ~= nil and humanoid:IsA("Humanoid") and humanoid:GetState() ~= "Dead" then
+   humanoid.Health += number
+ end
+end
+
+function Api:HumanoidRestore(humanoid)
+ if humanoid ~= nil and humanoid:IsA("Humanoid") and humanoid:GetState() ~= "Dead" then
+   humanoid.Health = humanoid.MaxHealth
+ end
+end
+
+function Api:TeleportTo(Instance1, Instance2)
+  if Instance1 ~= nil and Instance2 ~= nil and Instance1["Position"] and Instance2["Position"] then
+   Instance1.Position = Instance2.Position
+  end
+end
+
+function Api:CreateChat(character, message)
+game:GetService("Chat"):Chat(character, message, Enum.ChatColor.White)
+end
+
+function Api:TemporaryImmortal(humanoid, time)
+ if humanoid ~= nil and time >= 0 then
+    if humanoid:IsA("Humanoid") and humanoid:GetState() ~= "Dead" then
+ humanoid:SetStateEnabled(Enum.HumanoidStateType.Dead, false)
+  task.delay(time, function()
+ pcall(function()
+humanoid:SetStateEnabled(Enum.HumanoidStateType.Dead, true)
+ end)
+  end)
+    end
+  end
+end
+
+function Api:IdentifyPosition(variable)
+ if typeof(variable) == "Vector3" then
+return "Vector3"
+ elseif typeof(variable) == "CFrame" then
+return "CFrame"
+ end
+end
+
+function Api:GetLaunchTime()
+  return math.floor(workspace.DistributedGameTime)
+end
+
+function Api:ldentifyValueType(variable)
+ local value = typeof(variable)
+ return value
+end
+
+function Api:NumberToHex(number)
+ if type(number) == "number" then
+return string.format("%X", number)
+ end
+end
+
+function Api:NumberToBinary(num)
+ if type(num) == "number" then
+       if num == 0 then return "0" end
+       local binary = ""
+       while num > 0 do
+           binary = (num % 2) .. binary
+           num = math.floor(num / 2)
+       end
+       return binary
+ end
+end
+
+function Api:AverageArithmetic(tbl)
+local sum = 0
+       for _, v in ipairs(tbl) do
+           sum = sum + v
+       end
+       return sum / #tbl
+end
+
+function Api:CopyTable(tbl)
+local copy = {}
+       for k, v in pairs(tbl) do
+           if type(v) == "table" then
+               copy[k] = copyTable(v)
+           else
+               copy[k] = v
+           end
+       end
+       return copy
+end
+
+function Api:TableIsEmpty(tbl)
+ return type(tbl) == "table" and next(tbl) == nil
+end
+
+function Api:TableFindKey(tbl, key)
+ return tbl[key] ~= nil
+end
+
+function Api:StringHasSpaces(string)
+  return string:find(" ") ~= nil
+end
+
+function Api:ExceedingNumber(max, min)
+ return max > min
+end
+
+function Api:ReverseString(str)
+ return string.reverse(str)
+end
+
+function Api:StringIsNumber(string)
+ return tostring(string) ~= nil
+end
+
+function Api:ReverseNumber(number)
+ local strNum = tostring(number)
+ local reversedStr = strNum:reverse()
+ return tonumber(reversedStr)
+end
+
+function Api:PartIsFalling(part)
+ return part.Velocity.Y < 0
+end
+
+function Api:PartOnGrounded(part)
+ return part.Velocity.Y == 0
+end
+
+function Api:Wait(time)
+  task.wait(time)
+end
+
+function Api:FastWait()
+  game:GetService("RunService").Heartbeat:Wait()
+end
+
+function Api:FrameWait()
+  game:GetService("RunService").RenderStepped:Wait()
+end
+
+function Api:VulnerableIsStorage(vulnerable)
+  if vulnerable ~= nil and vulnerable:IsA("Instance") then
+ return #vulnerable > 3
+  end
+  return false
+end
+
 return Api
