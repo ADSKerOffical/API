@@ -489,4 +489,16 @@ function Api:IdentifyFunctionArgs(func)
     print("Function takes " .. (info.nparams or 0) .. " parameters.")
 end
 
+function Api:GetComponent(path)
+ local value = getfenv(0)
+
+ while value ~= nil and path ~= "" do
+  local name, nextValue = string.match(path, "^([^.]+)%.?(.*)$")
+  value = value[name]
+  path = nextValue
+ end
+
+ return value
+end
+
 return Api
