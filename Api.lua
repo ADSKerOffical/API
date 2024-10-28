@@ -231,4 +231,84 @@ function Api:GetDistanceBetweenParts(part1, part2)
     return (part1.Position - part2.Position).magnitude
 end
 
+function Api:BlockTool(player, tool)
+  if player ~= nil and player:IsA("Player") and player.Character.Humanoid:GetState() ~= "Dead" then
+local startTime = os.clock()
+while os.clock() - startTime < 4 and game:GetService("RunService").Heartbeat:Wait() do
+  player.Character.Humanoid:UnequipTools(tool)
+end
+  end
+end
+
+function Api:CreateGetServiceVariable()
+    local Services = setmetatable({}, {
+        __index = function(Self, Index)
+            local NewService = game:GetService(Index)
+            if NewService then
+                Self[Index] = NewService
+            end
+            return NewService
+        end
+    })
+    
+    return Services
+end
+
+function Api:CreateInstanceVariable()
+    local Instances = setmetatable({}, {
+        __index = function(Self, Index)
+            local NewInstance = Instance.new(Index)
+            if NewInstance then
+                Self[Index] = NewInstance
+            end
+            return NewInstance
+        end
+    })
+    
+    return Instances
+end
+
+function Api:IdentifyVariable(variable)
+  if type(variable) == "string" then
+   return "string"
+  elseif type(variable) == "number" then
+   return "number"
+  elseif type(variable) == "function" then
+   return "function"
+  elseif type(variable) == "table" then
+   return "table"
+  elseif type(variable) == "boolean" then
+   return "boolean"
+  elseif type(variable) == "thread" then
+   return "thread"
+  elseif type(variable) == "userdata" then
+   return "userdata"
+  else
+   return "unknown"
+  end
+end
+
+function Api:StringTrim(string)
+local oneLine = string.gsub(string, "\n", " ")
+ return oneLine
+end
+
+function Api:NumberFactorial(n)
+if n == 0 then
+        return 1
+    elseif n < 0 then
+        return nil
+    else
+        local result = 1
+        for i = 2, n do
+            result = result * i
+        end
+        return result
+    end
+end
+
+function Api:EvenNumber(n)
+ return n % 2 == 0
+end
+
 return Api
