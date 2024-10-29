@@ -464,11 +464,19 @@ function Api:IdentifyTable(tbl, indent)
 
     for key, value in pairs(tbl) do
         if type(value) == "table" then
+         pcall(function()
             print(prefix .. tostring(key) .. " = {")
+         end)
+         pcall(function()
             PrintTable(value, indent + 1)
+         end)
+         pcall(function()
             print(prefix .. "}")
+         end)
         else
+          pcall(function()
             print(prefix .. tostring(key) .. " = " .. tostring(value))
+          end)
         end
     end
 end
