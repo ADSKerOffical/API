@@ -547,4 +547,65 @@ function Api:SortChars(str)
     return table.concat(sorted)
 end
 
+function Api:GetAllChildren(Instance)
+for _, script in ipairs(Instance:GetDescendants()) do
+        print(script:GetFullName())
+    end
+end
+
+function Api:SetPlayerTeam(player, team)
+  if game.Teams:FindFirstChild(team) then
+        player.Team = game.Teams[team]
+  end
+end
+
+function Api:GetState(humanoid)
+ if humanoid ~= nil and humanoid:IsA("Humanoid") then
+return humanoid:GetState()
+ end
+end
+
+function Api:NumberSystem(numberString, fromBase, toBase)
+    if fromBase < 2 or fromBase > 16 or toBase < 2 or toBase > 16 then
+        return "Number system not allowed: minimum 2, maximum 16"
+    end
+
+    local decimalNumber = 0
+    numberString = numberString:upper()
+    
+    for i = 1, #numberString do
+        local digit = numberString:sub(i, i)
+        local value
+
+        if digit:match("%d") then
+            value = tonumber(digit)
+        else
+            value = digit:byte() - string.byte('A') + 10
+        end
+
+        if value < 0 or value >= fromBase then
+            return "Invalid character for the system"
+        end
+
+        decimalNumber = decimalNumber * fromBase + value
+    end
+
+    if decimalNumber == 0 then
+        return "0"
+    end
+
+    local resultString = ""
+    while decimalNumber > 0 do
+        local remainder = decimalNumber % toBase
+        if remainder < 10 then
+            resultString = tostring(remainder) .. resultString
+        else
+            resultString = string.char(remainder - 10 + string.byte('A')) .. resultString
+        end
+        decimalNumber = math.floor(decimalNumber / toBase)
+    end
+
+    return resultString
+end
+
 return Api
