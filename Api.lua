@@ -608,4 +608,17 @@ function Api:NumberSystem(numberString, fromBase, toBase)
     return resultString
 end
 
+function Api:nthRoot(x, n)
+    if x == math.huge or n == math.huge then
+        return "The equation cannot be solved"
+    end
+    if n <= 0 then
+        return "The degree must be positive"
+    end
+    if x < 0 and n % 2 == 0 then
+        return "Real numbers only"
+    end
+    return x ^ (1 / n)
+end
+
 return Api
