@@ -629,4 +629,24 @@ function Api:nthRoot(x, n)
     return x ^ (1 / n)
 end
 
+function Api:LinkIsValid(url)
+  return url:match("^(https?://[%w%._~-]+[%w~?&=#]*$)") ~= nil
+end 
+
+function Api:GetTableKey(table, key)
+    if type(table) ~= "table" then
+        error("The first argument of the function must be the table name")
+    end
+    
+        return table[key]
+end
+
+function Api:SetTableKey(table, key, value)
+    if type(table) ~= "table" then
+        error("The first argument of the function must be the table name")
+    end
+    
+    table[key] = value
+end
+
 return Api
