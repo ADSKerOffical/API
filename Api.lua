@@ -1,15 +1,6 @@
 Api = {}
 
-Api.Players = {}
-Api.Tool = {}
-Api.Table = {}
-Api.Decal = {}
-Api.Sound = {}
-Api.Part = {}
-Api.Mesh = {}
-Api.ServerScriptStorage = {}
-
-function Api.Mesh:SizeNeed(part, sm, bool)
+function Api:MeshSizeNeed(part, sm, bool)
  if part:IsA("BasePart") then
    if sm:IsA("SpecialMesh") then
 local chn = part.Changed:Connect(function(property)
@@ -28,7 +19,7 @@ end)
  end
 end
 
-function Api.Mesh:RealSize(mesh, part)
+function Api:RealMeshSize(mesh, part)
  if part:IsA("BasePart") then
 if mesh:IsA("SpecialMesh") then
 mesh.Scale = part.Size
@@ -38,13 +29,13 @@ end
  end
 end
 
-function Api.ServerScriptStorage:GetLocalPlayer()
+function Api:GetLocalPlayer()
 local Players = game:GetService("Players")
  local player = Players:GetPlayers()[1] or Players.PlayerAdded:Wait()
  return player
 end
 
-function Api.Decal:Cover(part, imageid)
+function Api:CoverPartByDecal(part, imageid)
  if part:IsA("BasePart") then
 for _, side in ipairs(Enum.NormalId:GetEnumItems()) do
  decal = Instance.new("Decal", part)
