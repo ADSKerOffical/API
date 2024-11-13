@@ -1,5 +1,66 @@
 Api = {}
 
+Api.Players = {}
+Api.Tool = {}
+Api.Table = {}
+Api.Decal = {}
+Api.Sound = {}
+Api.Part = {}
+Api.Mesh = {}
+Api.ServerScriptStorage = {}
+
+function Api.Mesh:SizeNeed(part, sm, bool)
+ if part:IsA("BasePart") then
+   if sm:IsA("SpecialMesh") then
+local chn = part.Changed:Connect(function(property)
+  if bool == false then chn:Disconnect() end
+    if property == "Size" then
+sm.Scale = part.Size
+   end
+  end)
+    elseif sm:IsA("MeshPart") then
+local chn = part.Changed:Connect(function(property)
+ if bool == false then chn:Disconnect() end
+   if property == "Size" then
+ sm.MeshSize = part.Size
+   end
+end)
+ end
+end
+
+function Api.Mesh:RealSize(mesh, part)
+ if part:IsA("BasePart") then
+if mesh:IsA("SpecialMesh") then
+mesh.Scale = part.Size
+ elseif mesh:IsA("MeshPart") then
+mesh.MeshSize = part.Size
+end
+ end
+end
+
+function Api.ServerScriptStorage:GetLocalPlayer()
+local Players = game:GetService("Players")
+ local player = Players:GetPlayers()[1] or Players.PlayerAdded:Wait()
+ return player
+end
+
+function Api.Decal:Cover(part, imageid)
+ if part:IsA("BasePart") then
+for _, side in ipairs(Enum.NormalId:GetEnumItems()) do
+ decal = Instance.new("Decal", part)
+local success, f = pcall(function()
+ decal.Texture = "rbxassetid://" .. tostring(imageid)
+end)
+   if not success then
+error('argument #2 must be indicated without "rbxassetid://" or the texture does not exist')
+   end
+ decal.Face = side
+end
+  else
+error("The object must be BasePart")
+ end
+ end
+
 function Api:AddTexture(part, id, face)
 pcall(function()
  if tostring(face) ~= "all" then
